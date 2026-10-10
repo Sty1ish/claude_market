@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const skillRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const source = resolve(skillRoot, "assets/anti-slop");
+const source = resolve(skillRoot, "../../plugin");
 const arguments_ = process.argv.slice(2);
 const targetArgument = arguments_.find((argument) => !argument.startsWith("--"));
 const target = resolve(process.cwd(), targetArgument ?? "tools/oxlint/anti-slop");
