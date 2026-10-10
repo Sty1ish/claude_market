@@ -1,0 +1,44 @@
+{
+  "name": "claude-market",
+  "owner": {
+    "name": "Sty1ish"
+  },
+  "metadata": {
+    "description": "Sty1ish가 Claude Code에서 쓰는 플러그인 모음"
+  },
+  "plugins": [
+    {
+      "name": "anti-slop",
+      "source": "./plugins/anti-slop",
+      "description": "Claude가 JS/TS 파일을 고칠 때마다 대충 짠 코드 패턴을 oxlint로 잡아 바로 고치게 한다",
+      "category": "development"
+    },
+    {
+      "name": "superpowers",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/obra/superpowers.git"
+      },
+      "description": "브레인스토밍·계획·TDD·디버깅·코드리뷰 순서를 Claude에게 가르치는 스킬 모음",
+      "category": "development"
+    },
+    {
+      "name": "andrej-karpathy-skills",
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      },
+      "description": "과하게 만들지 않기·필요한 곳만 고치기 같은 코딩 행동 지침",
+      "category": "workflow"
+    },
+    {
+      "name": "diagram-design",
+      "source": {
+        "source": "github",
+        "repo": "cathrynlavery/diagram-design"
+      },
+      "description": "구조도·흐름도·간트 등 다이어그램을 HTML/SVG로 그려 주는 스킬",
+      "category": "productivity"
+    }
+  ]
+}

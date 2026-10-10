@@ -1,0 +1,9 @@
+{
+  "name": "anti-slop",
+  "version": "1.0.0",
+  "description": "Claude가 JS/TS 파일을 고칠 때마다 oxlint anti-slop 규칙으로 검사하고, 위반이 있으면 바로 고치게 한다",
+  "author": {
+    "name": "Sty1ish"
+  },
+  "license": "MIT"
+}
