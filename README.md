@@ -11,6 +11,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 | **superpowers** | 일하는 순서를 가르치는 스킬 모음입니다 (기획 → 계획 → 테스트 먼저 → 디버깅 → 리뷰) | Claude가 바로 코드부터 쓰지 않고, 먼저 묻고 계획한 뒤 검증까지 하게 만듭니다 |
 | **andrej-karpathy-skills** | 코딩 행동 지침입니다 | 시킨 것보다 크게 만들거나, 상관없는 곳까지 고치는 버릇을 줄입니다 |
 | **ponytail** | 새 세션마다 "가장 단순한 해결책" 규칙을 자동으로 켭니다 | 날짜 선택기 하나에 라이브러리·래퍼·스타일시트를 붙이는 대신 기본 `<input type="date">`를 쓰는 식으로, 새 의존성과 불필요한 코드를 줄입니다 |
+| **impeccable** (선택) | 화면 디자인을 점검하고 다듬는 스킬과 `/impeccable` 명령 모음입니다 | AI가 만든 티가 나는 뻔한 UI(보라색 그라데이션, 카드 남발 등)를 잡아내고, `audit`·`critique`·`polish` 같은 명령으로 디자인 품질을 끌어올립니다 |
 | **diagram-design** (선택) | 구조도·흐름도·간트 같은 그림을 그려 줍니다 | 문서나 보고에 쓸 그림이 필요할 때 씁니다 |
 
 ## 설치 방법
@@ -28,6 +29,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 /plugin install superpowers@claude-market
 /plugin install andrej-karpathy-skills@claude-market
 /plugin install ponytail@claude-market
+/plugin install impeccable@claude-market
 /plugin install diagram-design@claude-market
 ```
 
@@ -41,6 +43,7 @@ claude plugin install anti-slop@claude-market
 claude plugin install superpowers@claude-market
 claude plugin install andrej-karpathy-skills@claude-market
 claude plugin install ponytail@claude-market
+claude plugin install impeccable@claude-market
 claude plugin install diagram-design@claude-market
 ```
 
@@ -55,6 +58,10 @@ claude plugin install diagram-design@claude-market
   - 직접 부르는 명령: `/ponytail-review`(변경 리뷰), `/ponytail-audit`(저장소 전체 점검), `/ponytail-debt`(미뤄 둔 지름길 목록), `/ponytail-help`
   - 작업이 끝날 때마다 비용·토큰 기록을 `~/.config/ponytail/band/`에 CSV로 남깁니다. 외부 전송(webhook)은 기본으로 꺼져 있어 따로 설정하지 않으면 PC 밖으로 나가는 데이터는 없습니다.
 - **ponytail을 원래 저장소(`ponytail@ponytail`)로 이미 설치했다면** 다시 설치하지 않아도 됩니다. 규칙이 두 번 들어갑니다.
+- **impeccable은 프로젝트마다 한 번 `/impeccable init`을 실행하세요.** 디자인 정보를 모아 `PRODUCT.md`와 `DESIGN.md`를 만듭니다. 그다음 `/impeccable audit`(점검), `/impeccable critique`(비평), `/impeccable polish`(다듬기) 같은 명령을 씁니다.
+  - 세션을 시작할 때, Claude가 파일을 고칠 때마다(최대 5초), 답변이 끝날 때마다(최대 30초) 검사가 자동으로 돕니다. 답변 끝에 잠깐 기다릴 수 있습니다.
+  - 처음 돌 때 검사 엔진(실행 파일)을 GitHub Releases에서 내려받습니다. 함께 들어 있는 체크섬과 맞지 않으면 실행하지 않습니다. 외부 실행 파일 다운로드가 막힌 PC에서는 이 단계에서 멈출 수 있습니다.
+- **impeccable을 원래 저장소(`impeccable@impeccable`)로 이미 설치했다면** 다시 설치하지 않아도 됩니다.
 - 새 버전 받기: `/plugin marketplace update claude-market`
 
 ## anti-slop이 막는 것 (예시)
@@ -73,4 +80,5 @@ anti-slop 플러그인에는 `install-anti-slop` 스킬도 들어 있습니다. 
 - superpowers: [obra/superpowers](https://github.com/obra/superpowers)
 - andrej-karpathy-skills: [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills)
 - diagram-design: [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design)
+- impeccable: Paul Bakaus. [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
 - ponytail: Dietrich Gebert (MIT). [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)

@@ -48,6 +48,16 @@
       },
       "description": "라이브러리를 새로 넣기 전에 기존 코드·표준 라이브러리·기본 기능부터 쓰게 해 가장 단순한 해결책을 고르게 하는 규칙",
       "category": "development"
+ },
+    {
+      "name": "impeccable",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/pbakaus/impeccable.git",
+        "path": "plugin"
+      },
+      "description": "AI가 만든 티 나는 프론트엔드 디자인을 잡아내고 다듬는 디자인 스킬과 /impeccable 명령 모음",
+      "category": "design"
     }
   ]
 }
