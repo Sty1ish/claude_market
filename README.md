@@ -58,7 +58,7 @@ claude plugin install diagram-design@claude-market
   - 직접 부르는 명령: `/ponytail-review`(변경 리뷰), `/ponytail-audit`(저장소 전체 점검), `/ponytail-debt`(미뤄 둔 지름길 목록), `/ponytail-help`
   - 작업이 끝날 때마다 비용·토큰 기록을 `~/.config/ponytail/band/`에 CSV로 남깁니다. 외부 전송(webhook)은 기본으로 꺼져 있어 따로 설정하지 않으면 PC 밖으로 나가는 데이터는 없습니다.
 - **ponytail을 원래 저장소(`ponytail@ponytail`)로 이미 설치했다면** 다시 설치하지 않아도 됩니다. 규칙이 두 번 들어갑니다.
-- **impeccable은 프로젝트마다 한 번 `/impeccable init`을 실행하세요.** 디자인 정보를 모아 `PRODUCT.md`와 `DESIGN.md`를 만듭니다. 그다음 `/impeccable audit`(점검), `/impeccable critique`(비평), `/impeccable polish`(다듬기) 같은 명령을 씁니다.
+- **impeccable은 프로젝트마다 한 번 `/impeccable init`을 실행하세요.** 코드를 읽고 모자란 것만 물어본 뒤 `PRODUCT.md`를 만듭니다. 이미 쓰는 색·글꼴 같은 디자인 규칙은 `/impeccable document`로 `DESIGN.md`에 남겨 두면 이후 수정이 그 규칙을 따릅니다. 그다음 `/impeccable audit`(점검), `/impeccable critique`(비평), `/impeccable polish`(다듬기) 같은 명령을 씁니다.
   - 세션을 시작할 때, Claude가 파일을 고칠 때마다(최대 5초), 답변이 끝날 때마다(최대 30초) 검사가 자동으로 돕니다. 답변 끝에 잠깐 기다릴 수 있습니다.
   - 처음 돌 때 검사 엔진(실행 파일)을 GitHub Releases에서 내려받습니다. 함께 들어 있는 체크섬과 맞지 않으면 실행하지 않습니다. 외부 실행 파일 다운로드가 막힌 PC에서는 이 단계에서 멈출 수 있습니다.
 - **impeccable을 원래 저장소(`impeccable@impeccable`)로 이미 설치했다면** 다시 설치하지 않아도 됩니다.
