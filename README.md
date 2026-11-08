@@ -13,6 +13,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 | **ponytail** | **훅** (세션·서브에이전트 시작 때 규칙 프롬프트 주입) + 스킬 6 | 새 세션마다 "가장 단순한 해결책" 규칙을 자동으로 켭니다 | 날짜 선택기 하나에 라이브러리·래퍼·스타일시트를 붙이는 대신 기본 `<input type="date">`를 쓰는 식으로, 새 의존성과 불필요한 코드를 줄입니다 |
 | **impeccable** (선택) | **스킬** 1 (`/impeccable` 하위 명령 24개) + 훅 (파일 수정 후·답변 끝 검사) + 에이전트 4 | 화면 디자인을 점검하고 다듬는 스킬과 `/impeccable` 명령 모음입니다 | AI가 만든 티가 나는 뻔한 UI(보라색 그라데이션, 카드 남발 등)를 잡아내고, `audit`·`critique`·`polish` 같은 명령으로 디자인 품질을 끌어올립니다 |
 | **diagram-design** (선택) | **스킬** 1 + 명령 6 | 구조도·흐름도·간트 같은 그림을 그려 줍니다 | 문서나 보고에 쓸 그림이 필요할 때 씁니다 |
+| **agent-desktop** (선택) | **MCP 서버** (플러그인 아님) | 데스크톱 앱 화면 요소(버튼·입력칸 등)를 읽고 클릭·입력합니다 | 브라우저 밖의 데스크톱 프로그램까지 Claude가 직접 조작하게 할 때 씁니다 |
 
 종류 읽는 법:
 
@@ -20,13 +21,14 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 - **스킬**: Claude가 상황을 보고 스스로 꺼내 읽는 지침입니다. `/이름`으로 직접 부를 수도 있습니다.
 - **명령**: `/이름`으로 직접 불러야만 실행됩니다.
 - **에이전트**: 스킬이 일을 나눠 맡기는 보조 Claude입니다. 직접 부를 일은 거의 없습니다.
+- **MCP 서버**: Claude가 쓸 수 있는 도구를 늘려 주는 별도 프로그램입니다. `/plugin`이 아니라 터미널에서 `claude mcp add`로 등록합니다.
 
 ## 설치 방법
 
 ### 준비물
 
 - Claude Code
-- Node.js (anti-slop이 검사 도구를 돌릴 때, ponytail이 훅을 돌릴 때 씁니다)
+- Node.js (anti-slop이 검사 도구를 돌릴 때, ponytail이 훅을 돌릴 때, agent-desktop을 설치할 때 씁니다)
 
 ### Claude Code 채팅창에 한 줄씩 입력
 
@@ -77,6 +79,27 @@ claude plugin marketplace add cathrynlavery/diagram-design
 claude plugin install diagram-design@diagram-design
 ```
 
+#### agent-desktop (선택, MCP 서버)
+
+플러그인이 아니라서 `/plugin`으로는 설치할 수 없고, 터미널에서만 설치합니다. 먼저 프로그램을 설치합니다.
+
+```
+npm install -g agent-desktop
+agent-desktop status
+```
+
+그다음 Claude Code에 MCP 서버로 등록합니다. `-s user`를 붙이면 모든 프로젝트에서 쓸 수 있습니다.
+
+```
+# Windows (PowerShell 또는 cmd에서 실행. Git Bash에서는 /c가 경로로 바뀌어 연결에 실패합니다)
+claude mcp add -s user agent-desktop -- cmd /c agent-desktop mcp
+
+# macOS / Linux
+claude mcp add -s user agent-desktop -- agent-desktop mcp
+```
+
+`claude mcp get agent-desktop`을 실행해 `Connected`가 나오면 끝입니다. 그다음 Claude Code를 껐다 켭니다.
+
 ## 알아 둘 것
 
 - **anti-slop을 처음 쓸 때 몇 초 걸립니다.** 첫 검사 때 검사 도구(oxlint)를 알아서 설치합니다. 그다음부터는 바로 돌아갑니다.
@@ -90,6 +113,9 @@ claude plugin install diagram-design@diagram-design
 - **impeccable은 프로젝트마다 한 번 `/impeccable init`을 실행하세요.** 코드를 읽고 모자란 것만 물어본 뒤 `PRODUCT.md`를 만듭니다. 이미 쓰는 색·글꼴 같은 디자인 규칙은 `/impeccable document`로 `DESIGN.md`에 남겨 두면 이후 수정이 그 규칙을 따릅니다. 그다음 `/impeccable audit`(점검), `/impeccable critique`(비평), `/impeccable polish`(다듬기) 같은 명령을 씁니다.
   - 세션을 시작할 때, Claude가 파일을 고칠 때마다(최대 5초), 답변이 끝날 때마다(최대 30초) 검사가 자동으로 돕니다. 답변 끝에 잠깐 기다릴 수 있습니다.
   - 처음 돌 때 검사 엔진(실행 파일)을 GitHub Releases에서 내려받습니다. 함께 들어 있는 체크섬과 맞지 않으면 실행하지 않습니다. 외부 실행 파일 다운로드가 막힌 PC에서는 이 단계에서 멈출 수 있습니다.
+- **agent-desktop은 화면 내용을 그대로 읽습니다.** 화면 정보, 클립보드, 스크린샷에 고객 정보 같은 민감한 내용이 담길 수 있으니 결과를 공개 저장소나 채널에 올리지 마세요. macOS는 처음에 `agent-desktop permissions --guide`로 손쉬운 사용 권한을 줘야 합니다.
+  - `status` 실행 때 "Node launcher" 경고가 나와도 그대로 쓸 수 있습니다. 명령마다 0.1초쯤 느려질 뿐입니다.
+  - 새 버전 받기: `npm install -g agent-desktop` (플러그인이 아니라서 `/plugin marketplace update`로는 갱신되지 않습니다)
 - 새 버전 받기: `/plugin marketplace update` (추가한 마켓플레이스를 모두 새로 받습니다)
 
 ## anti-slop이 막는 것 (예시)
@@ -110,3 +136,4 @@ anti-slop 플러그인에는 `install-anti-slop` 스킬도 들어 있습니다. 
 - diagram-design: [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design)
 - impeccable: Paul Bakaus. [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
 - ponytail: Dietrich Gebert (MIT). [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
+- agent-desktop: Vercel Labs. [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop)
