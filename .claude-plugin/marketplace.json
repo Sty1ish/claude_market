@@ -39,6 +39,16 @@
       },
       "description": "구조도·흐름도·간트 등 다이어그램을 HTML/SVG로 그려 주는 스킬",
       "category": "productivity"
+    },
+    {
+      "name": "astryx",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/meta/astryx.git",
+        "path": "plugins/astryx"
+      },
+      "description": "Meta의 오픈소스 디자인 시스템 Astryx를 astryx 명령으로 쓰게 해, UI를 템플릿·컴포넌트·토큰으로 짓게 하는 스킬",
+      "category": "design"
     }
   ]
 }

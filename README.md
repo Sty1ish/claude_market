@@ -10,6 +10,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 | **anti-slop** | **훅** (파일 수정 후 검사) + 스킬 1 | Claude가 JS/TS 파일을 고칠 때마다 자동으로 검사합니다 | AI가 대충 짠 코드(불필요한 형변환, 읽기 힘든 줄 붙임 등)를 그 자리에서 잡아 바로 다시 고치게 합니다. 사람이 리뷰하며 일일이 지적할 필요가 줄어듭니다 |
 | **superpowers** | **스킬** 15 + 훅 (세션 시작 때 사용법 프롬프트 주입) | 일하는 순서를 가르치는 스킬 모음입니다 (기획 → 계획 → 테스트 먼저 → 디버깅 → 리뷰) | Claude가 바로 코드부터 쓰지 않고, 먼저 묻고 계획한 뒤 검증까지 하게 만듭니다 |
 | **andrej-karpathy-skills** | **스킬** 1 | 코딩 행동 지침입니다 | 시킨 것보다 크게 만들거나, 상관없는 곳까지 고치는 버릇을 줄입니다 |
+| **astryx** (선택) | **스킬** 1 + CLI (`astryx` 명령, npm 전역 설치) | Meta의 오픈소스 디자인 시스템(컴포넌트 150개 이상 · 테마 · 화면 템플릿)을 `astryx` 명령으로 찾아 쓰게 합니다 | UI를 만들 때 Claude가 맨 `<div>`와 직접 박은 색·간격 대신 이미 만들어진 템플릿·컴포넌트·토큰으로 짓습니다. 문서는 CLI가 답하므로 버전이 바뀌어도 낡지 않습니다 |
 | **diagram-design** (선택) | **스킬** 1 + 명령 6 | 구조도·흐름도·간트 같은 그림을 그려 줍니다 | 문서나 보고에 쓸 그림이 필요할 때 씁니다 |
 | **agent-desktop** (선택) | **MCP 서버** (플러그인 아님) | 데스크톱 앱 화면 요소(버튼·입력칸 등)를 읽고 클릭·입력합니다 | 브라우저 밖의 데스크톱 프로그램까지 Claude가 직접 조작하게 할 때 씁니다 |
 | **codebase-memory-mcp** (선택) | **MCP 서버** (플러그인 아님) | 코드를 읽어 함수·호출 관계를 그래프로 만들어 두고, Claude가 그래프에 물어보게 합니다 | 큰 코드베이스에서 "누가 이 함수를 부르나", "바꾸면 어디가 깨지나"를 grep 반복 없이 찾아 토큰을 아낍니다. 작은 프로젝트에서는 이득이 거의 없습니다 |
@@ -27,7 +28,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 ### 준비물
 
 - Claude Code
-- Node.js (anti-slop이 검사 도구를 돌릴 때, agent-desktop을 설치할 때 씁니다)
+- Node.js (anti-slop이 검사 도구를 돌릴 때, agent-desktop · astryx CLI를 설치할 때 씁니다. astryx CLI는 22.13 이상)
 
 ### Claude Code 채팅창에 한 줄씩 입력
 
@@ -44,6 +45,10 @@ anti-slop만 이 저장소에서 받고, 나머지는 각 플러그인을 만든
 # andrej-karpathy-skills
 /plugin marketplace add forrestchang/andrej-karpathy-skills
 /plugin install andrej-karpathy-skills@karpathy-skills
+
+# astryx (선택) — 저장소가 커서 아래 「astryx」 설명대로 터미널에서 받는 편이 안전합니다
+/plugin marketplace add meta/astryx
+/plugin install astryx@astryx
 
 # diagram-design (선택)
 /plugin marketplace add cathrynlavery/diagram-design
@@ -65,6 +70,31 @@ claude plugin install andrej-karpathy-skills@karpathy-skills
 claude plugin marketplace add cathrynlavery/diagram-design
 claude plugin install diagram-design@diagram-design
 ```
+
+#### astryx (선택, 플러그인 + CLI)
+
+플러그인은 "UI를 만들 땐 `astryx` 명령을 써라"라는 스킬 하나뿐이고, 실제 컴포넌트 문서·템플릿은 `astryx` 명령이 답합니다. 그래서 둘 다 설치합니다.
+
+astryx 저장소는 파일이 1만 개가 넘어 기본 제한 시간(2분) 안에 받지 못하고 `Git clone timed out`으로 실패할 수 있습니다. 제한 시간을 5분으로 늘려 터미널에서 받습니다.
+
+```
+# Windows PowerShell
+$env:CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS = '300000'
+# macOS / Linux
+export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS=300000
+
+claude plugin marketplace add meta/astryx
+claude plugin install astryx@astryx
+```
+
+그다음 CLI를 설치하고, CLI가 따로 만드는 스킬을 끕니다. 끄지 않으면 CLI가 첫 실행 때 `~/.claude/skills/astryx`에 같은 스킬을 하나 더 링크해 두 벌이 됩니다.
+
+```
+npm install -g @astryxdesign/cli
+astryx init --user --remove-agents
+```
+
+`astryx search button`에서 결과가 나오면 끝입니다. 그다음 Claude Code를 껐다 켭니다.
 
 #### agent-desktop (선택, MCP 서버)
 
@@ -110,6 +140,9 @@ claude mcp add -s user codebase-memory -- codebase-memory-mcp
 - **anti-slop을 처음 쓸 때 몇 초 걸립니다.** 첫 검사 때 검사 도구(oxlint)를 알아서 설치합니다. 그다음부터는 바로 돌아갑니다.
 - **예전에 anti-slop을 직접 설치했다면** `~/.claude/settings.json`의 `hooks` 안에 있는 `anti-slop/hook.mjs` 줄을 지우세요. 그대로 두면 검사가 두 번 돌아갑니다.
 - **예전에 `@claude-market`으로 설치한 플러그인이 있다면** (anti-slop 제외) 먼저 지우고 위 명령으로 다시 설치하세요. 예: `/plugin uninstall superpowers@claude-market`. 둘 다 두면 같은 스킬이 두 벌 생깁니다.
+- **astryx는 UI 작업 때만 꺼내 씁니다.** 프로젝트에서 처음 쓸 때 Claude가 `@astryxdesign/core`·`@astryxdesign/cli`를 프로젝트에 넣고 `astryx init`을 돌립니다. 이때 프로젝트의 `AGENTS.md` 또는 `CLAUDE.md`에 Astryx 안내 블록이 들어가니, 공용 저장소라면 커밋 전에 확인하세요. 홈 폴더의 `~/.claude/CLAUDE.md`에는 쓰지 않습니다.
+  - React 19 이상 프로젝트에서만 쓸 수 있습니다.
+  - 새 버전 받기: 플러그인은 `/plugin marketplace update`(이것도 위의 제한 시간 설정이 필요할 수 있습니다), CLI는 `npm install -g @astryxdesign/cli`. 지우기: `/plugin uninstall astryx@astryx` 후 `npm uninstall -g @astryxdesign/cli`.
 - **agent-desktop은 화면 내용을 그대로 읽습니다.** 화면 정보, 클립보드, 스크린샷에 고객 정보 같은 민감한 내용이 담길 수 있으니 결과를 공개 저장소나 채널에 올리지 마세요. macOS는 처음에 `agent-desktop permissions --guide`로 손쉬운 사용 권한을 줘야 합니다.
   - `status` 실행 때 "Node launcher" 경고가 나와도 그대로 쓸 수 있습니다. 명령마다 0.1초쯤 느려질 뿐입니다.
   - 새 버전 받기: `npm install -g agent-desktop` (플러그인이 아니라서 `/plugin marketplace update`로는 갱신되지 않습니다)
@@ -138,5 +171,6 @@ anti-slop 플러그인에는 `install-anti-slop` 스킬도 들어 있습니다. 
 - superpowers: [obra/superpowers](https://github.com/obra/superpowers)
 - andrej-karpathy-skills: [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills)
 - diagram-design: [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design)
+- astryx: Meta (MIT). [meta/astryx](https://github.com/meta/astryx)
 - agent-desktop: Vercel Labs. [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop)
 - codebase-memory-mcp: DeusData (MIT). [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp)
