@@ -9,6 +9,7 @@ Claude Code에서 쓰는 플러그인 모음입니다.
 |---|---|---|---|
 | **anti-slop** | **훅** (파일 수정 후 검사) + 스킬 1 | Claude가 JS/TS 파일을 고칠 때마다 자동으로 검사합니다 | AI가 대충 짠 코드(불필요한 형변환, 읽기 힘든 줄 붙임 등)를 그 자리에서 잡아 바로 다시 고치게 합니다. 사람이 리뷰하며 일일이 지적할 필요가 줄어듭니다 |
 | **superpowers** | **스킬** 15 + 훅 (세션 시작 때 사용법 프롬프트 주입) | 일하는 순서를 가르치는 스킬 모음입니다 (기획 → 계획 → 테스트 먼저 → 디버깅 → 리뷰) | Claude가 바로 코드부터 쓰지 않고, 먼저 묻고 계획한 뒤 검증까지 하게 만듭니다 |
+| **decision-log** | **훅** (세션 시작 때 규칙 주입) + 스킬 1 | 작업을 시키면 목적(왜)을 먼저 묻고, 정한 값·기준·버린 안을 옵시디언 볼트 `결정/`에 노트로 남겨 커밋·push합니다 | 한 일은 기억나도 왜·얼마로 했는지는 잊습니다. 나중에 볼트에서 그 판단을 다시 찾게 합니다 |
 | **andrej-karpathy-skills** | **스킬** 1 | 코딩 행동 지침입니다 | 시킨 것보다 크게 만들거나, 상관없는 곳까지 고치는 버릇을 줄입니다 |
 | **astryx** (선택) | **스킬** 1 + CLI (`astryx` 명령, npm 전역 설치) | Meta의 오픈소스 디자인 시스템(컴포넌트 150개 이상 · 테마 · 화면 템플릿)을 `astryx` 명령으로 찾아 쓰게 합니다 | UI를 만들 때 Claude가 맨 `<div>`와 직접 박은 색·간격 대신 이미 만들어진 템플릿·컴포넌트·토큰으로 짓습니다. 문서는 CLI가 답하므로 버전이 바뀌어도 낡지 않습니다 |
 | **diagram-design** (선택) | **스킬** 1 + 명령 6 | 구조도·흐름도·간트 같은 그림을 그려 줍니다 | 문서나 보고에 쓸 그림이 필요할 때 씁니다 |
@@ -38,6 +39,9 @@ anti-slop만 이 저장소에서 받고, 나머지는 각 플러그인을 만든
 # anti-slop (이 저장소)
 /plugin marketplace add Sty1ish/claude_market
 /plugin install anti-slop@claude-market
+
+# decision-log (이 저장소) — 아래 「옵시디언 볼트」 세팅을 먼저
+/plugin install decision-log@claude-market
 
 # superpowers (Anthropic 공식 마켓플레이스)
 /plugin install superpowers@claude-plugins-official
