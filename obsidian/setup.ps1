@@ -65,13 +65,11 @@ if (Test-Path (Join-Path $VaultPath '.git')) {
     if (-not (git -C $VaultPath remote)) { git -C $VaultPath remote add origin $url }
     if ($remoteExists) {
         git -C $VaultPath pull --no-rebase origin main; Check 'pull'
-        git -C $VaultPath push -u origin main; Check 'push'
     } else {
-        Push-Location $VaultPath
-        gh repo create $Repo --private --source . --remote origin --push
-        $code = $LASTEXITCODE; Pop-Location
-        if ($code -ne 0) { Fail "저장소 만들기 (종료 코드 $code)" }
+        # origin 은 위에서 이미 걸었으므로 저장소만 만들고 push 는 git 으로 한다.
+        gh repo create $Repo --private; Check '저장소 만들기'
     }
+    git -C $VaultPath push -u origin main; Check 'push'
 } elseif ($remoteExists) {
     if ((Test-Path $VaultPath) -and (Get-ChildItem $VaultPath -Force | Select-Object -First 1)) {
         Fail "$VaultPath 에 다른 파일이 있습니다. 비우거나 -VaultPath 로 다른 곳을 지정하세요."
