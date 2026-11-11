@@ -135,6 +135,26 @@ claude mcp add -s user codebase-memory -- codebase-memory-mcp
 
 `claude mcp get codebase-memory`에서 `Connected`가 나오면 Claude Code를 껐다 켭니다. 그다음 쓸 프로젝트 폴더에서 Claude에게 "이 프로젝트 인덱싱해 줘"라고 하면 됩니다. 모노레포라면 루트 대신 쓰는 하위 프로젝트 경로를 알려 주세요 (예: "`packages/web`만 인덱싱해 줘").
 
+## 옵시디언 볼트 (작업 기록 · 결정 기록)
+
+Claude Code 플러그인은 아니지만 PC를 바꿀 때 같이 다시 세팅하는 것입니다. 볼트는 비공개 저장소 `Sty1ish/obsidian-vault`에 있고, 볼트 안에 Obsidian Git 플러그인과 설정(10분마다 자동 커밋 · push, 열 때 pull), 결정 기록 템플릿이 같이 들어 있어 clone만 하면 그대로 따라옵니다.
+
+준비물: git, gh(GitHub CLI). gh에 `Sty1ish` 계정이 로그인돼 있어야 합니다. 회사 계정이 활성 계정이어도 괜찮습니다.
+
+```
+gh auth login            # Sty1ish 가 아직 없을 때만
+git clone https://github.com/Sty1ish/claude_market.git
+powershell -ExecutionPolicy Bypass -File claude_market\obsidian\setup.ps1
+```
+
+스크립트가 하는 일:
+
+- 옵시디언이 없으면 winget으로 설치합니다.
+- `문서\ObsidianVault`에 볼트를 clone합니다. 볼트를 처음 만든 PC에서 실행하면 반대로 비공개 저장소를 만들고 push합니다.
+- 이 볼트에서만 Git Credential Manager를 끄고 `gh`의 Sty1ish 토큰으로 push하게 고정합니다. 회사 계정이 저장돼 있어도 섞이지 않습니다. gh의 활성 계정은 바꾸지 않습니다.
+
+그다음 옵시디언에서 「폴더를 보관소로 열기」 → `문서\ObsidianVault` → 「작성자를 신뢰」를 누르면 끝입니다. 경로를 바꾸려면 `-VaultPath D:\Notes`처럼 넘깁니다.
+
 ## 알아 둘 것
 
 - **anti-slop을 처음 쓸 때 몇 초 걸립니다.** 첫 검사 때 검사 도구(oxlint)를 알아서 설치합니다. 그다음부터는 바로 돌아갑니다.
