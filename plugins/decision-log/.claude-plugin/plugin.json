@@ -1,6 +1,6 @@
 {
   "name": "decision-log",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "작업마다 목적(왜)을 먼저 묻고, 정한 값 · 기준 · 버린 안을 옵시디언 볼트에 결정 노트로 남긴다",
   "author": {
     "name": "Sty1ish"
